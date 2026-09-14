@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from fastapi.staticfiles import StaticFiles
+
 from fastapi.responses import FileResponse
 import models
 import schemas
@@ -26,7 +26,7 @@ app = FastAPI(
     title="Chhaya Kushwaha Portfolio API",
     version="1.0.0",
 )
-app.mount("/static", StaticFiles(directory="."), name="static")
+
 # CORS settings
 app.add_middleware(
     CORSMiddleware,
@@ -96,11 +96,29 @@ PROJECTS = [
 
 # ---------------------------------------------------
 # Routes
-# ---------------------------------------------------
+# -------------------------------------------------
 
 @app.get("/")
 def home():
     return FileResponse("index.html")
+
+
+# 👇 YE NAYA ADD KARNA HAI
+@app.get("/style.css")
+def css():
+    return FileResponse("style.css", media_type="text/css")
+
+
+@app.get("/script.js")
+def javascript():
+    return FileResponse("script.js", media_type="application/javascript")
+
+
+@app.get("/photos.jpeg")
+def photo():
+    return FileResponse("photos.jpeg")
+
+
 
 
 @app.get("/api/health")
