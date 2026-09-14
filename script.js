@@ -1,7 +1,7 @@
 // ---------------------------------------------------------
 // Config
 // ---------------------------------------------------------
-const API_BASE = "http://127.0.0.1:8000"; // point this at your deployed backend
+const API_BASE = ""; // point this at your deployed backend
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
