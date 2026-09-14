@@ -17,8 +17,10 @@ import os
 import smtplib
 from email.message import EmailMessage
 
+from sqlalchemy import exc
+
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER")          # the email account that sends the notification
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  # app password, not your normal login password
 NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "chhayakushwaha100@gmail.com")  # where you receive it
@@ -47,11 +49,13 @@ def send_contact_notification(name: str, email: str, message: str) -> bool:
         f"Message:\n{message}\n"
     )
 
-    try:
-        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
-            server.login(SMTP_USER, SMTP_PASSWORD)
-            server.send_message(email_msg)
+    try: 
+       with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.send_message(email_msg)
         return True
-    except Exception as exc:  # pragma: no cover
+
+    except Exception as exc:
         print(f"[email] Failed to send contact notification: {exc}")
         return False
